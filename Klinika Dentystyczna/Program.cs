@@ -9,7 +9,8 @@ class Program
         string nazwisko;
         string plec;
         string rezerwacja;
-        string wyszukiwanie;
+        bool plecpoprawna = false;
+
 
         Console.WriteLine("Czy chcesz złożyć rezerwacje? (t/n)");
         rezerwacja = Console.ReadLine();
@@ -26,8 +27,12 @@ class Program
                     Console.WriteLine("Nie podano imienia");
 
                 }
+                else if (imie.Length < 3)
+                {
+                    Console.WriteLine("Nazwisko jest za krótkie");
+                }
 
-            } while (string.IsNullOrEmpty(imie));
+            } while (string.IsNullOrEmpty(imie) || imie.Length < 3);
 
             do
             {
@@ -38,23 +43,67 @@ class Program
                 {
                     Console.WriteLine("Nie podano nazwiska");
                 }
-            } while (string.IsNullOrEmpty(nazwisko));
+                else if(nazwisko.Length < 3)
+                {
+                    Console.WriteLine("Nazwisko jest za krótkie");
+                }
+     
+            } while (string.IsNullOrEmpty(nazwisko) || nazwisko.Length < 3);
 
             do
             {
                 Console.WriteLine("Podaj płeć (Mężczyzna/Kobieta)");
                 plec = Console.ReadLine();
 
+                
+
                 if (string.IsNullOrEmpty(plec))
                 {
                     Console.WriteLine("Nie podano płci");
                 }
-            } while (string.IsNullOrEmpty(plec));
+
+                else if (plec.Equals("Mężczyzna", StringComparison.OrdinalIgnoreCase) || plec.Equals("Kobieta", StringComparison.OrdinalIgnoreCase))
+                {
+                    plecpoprawna = true;
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Podano niepoprawną płeć!");
+                    
+                }
+                
+            } while (!plecpoprawna);
 
             string sciezka = "dane.txt";
+            string szukany = imie + " " + nazwisko;
+            bool znaleziony = false;
 
-            File.AppendAllText(sciezka, imie + " " + nazwisko + " - " + plec + Environment.NewLine);
-            Console.WriteLine("Zarezerwowano");
+            foreach (string linie in File.ReadLines(sciezka))
+            {
+                if (linie.Contains(szukany, StringComparison.OrdinalIgnoreCase))
+                {
+                    znaleziony = true;
+                    break;
+                }
+                
+              
+            }
+            if (znaleziony)
+            {
+                Console.WriteLine("Dana osoba juz jest w bazie");
+
+            }
+            else
+            {
+                File.AppendAllText(sciezka, imie + " " + nazwisko + " - " + plec + Environment.NewLine);
+                Console.WriteLine("Zarezerwowano");
+
+            }
+
+            
+
+
         }
         else if (rezerwacja == "n" || rezerwacja == "N")
         {
