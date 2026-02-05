@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 class Program
 {
@@ -7,45 +8,110 @@ class Program
         string imie;
         string nazwisko;
         string plec;
-        
-        do
+        string rezerwacja;
+        string wyszukiwanie;
+
+        Console.WriteLine("Czy chcesz złożyć rezerwacje? (t/n)");
+        rezerwacja = Console.ReadLine();
+
+        if (rezerwacja == "t" || rezerwacja == "T")
         {
-            Console.WriteLine("Podaj Imie: ");
-            imie = Console.ReadLine();
-            
-            if (string.IsNullOrEmpty(imie))
+            do
             {
-                Console.WriteLine("Nie podano imienia");
+                Console.WriteLine("Podaj Imie: ");
+                imie = Console.ReadLine();
 
-            }
-            
-        } while(string.IsNullOrEmpty(imie));
+                if (string.IsNullOrEmpty(imie))
+                {
+                    Console.WriteLine("Nie podano imienia");
 
-        do
+                }
+
+            } while (string.IsNullOrEmpty(imie));
+
+            do
+            {
+                Console.WriteLine("Podaj Nazwisko");
+                nazwisko = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(nazwisko))
+                {
+                    Console.WriteLine("Nie podano nazwiska");
+                }
+            } while (string.IsNullOrEmpty(nazwisko));
+
+            do
+            {
+                Console.WriteLine("Podaj płeć (Mężczyzna/Kobieta)");
+                plec = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(plec))
+                {
+                    Console.WriteLine("Nie podano płci");
+                }
+            } while (string.IsNullOrEmpty(plec));
+
+            string sciezka = "dane.txt";
+
+            File.AppendAllText(sciezka, imie + " " + nazwisko + " - " + plec + Environment.NewLine);
+            Console.WriteLine("Zarezerwowano");
+        }
+        else if (rezerwacja == "n" || rezerwacja == "N")
         {
-            Console.WriteLine("Podaj Nazwisko");
-            nazwisko = Console.ReadLine();
-
-            if(string.IsNullOrEmpty(nazwisko))
+            string szukaneimie;
+            string szukanenazwisko;
+            do
             {
-                Console.WriteLine("Nie podano nazwiska");
-            }
-        } while (string.IsNullOrEmpty(nazwisko));
+                Console.WriteLine("Podaj Imie do Wyszukania: ");
+                szukaneimie = Console.ReadLine();
 
-        do
-        {
-            Console.WriteLine("Podaj płeć (Mężczyzna/Kobieta)");
-            plec = Console.ReadLine();
+                if (string.IsNullOrEmpty(szukaneimie))
+                {
+                    Console.WriteLine("Nie podano imienia");
 
-            if(string.IsNullOrEmpty (plec))
+                }
+
+            } while (string.IsNullOrEmpty(szukaneimie));
+            do
             {
-                Console.WriteLine("Nie podano płci");
+                Console.WriteLine("Podaj Nazwisko: ");
+                szukanenazwisko = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(szukanenazwisko))
+                {
+                    Console.WriteLine("Nie podano nazwiska");
+
+                }
+
+            } while (string.IsNullOrEmpty(szukanenazwisko));
+
+            string szukany = szukaneimie + " " + szukanenazwisko;
+
+            string sciezka = "dane.txt";
+
+            if (!File.Exists(sciezka))
+            {
+                Console.WriteLine("Brak pliku z rezerwacjami");
+                return;
             }
-        } while (string.IsNullOrEmpty (plec));
 
-        string sciezka = "dane.txt";
+            bool znaleziono = false;
 
-        File.AppendAllText(sciezka, imie + " " + nazwisko + " - " + plec + Environment.NewLine);
-        Console.WriteLine("Zarezerwowano");
+            foreach (string linie in File.ReadLines(sciezka))
+            {
+                if (linie.Contains(szukany, StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("Znaleziono Rezerwacje");
+                    Console.WriteLine(linie);
+                    znaleziono = true;
+                }
+            }
+            if (!znaleziono)
+            {
+                Console.WriteLine("Nie znaleziono rezerwacji");
+            }
+
+        }
     }
+        
 }
