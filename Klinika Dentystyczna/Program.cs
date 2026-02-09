@@ -52,7 +52,7 @@ class Program
             }
             else if (imie.Length < 3)
             {
-                Console.WriteLine("Nazwisko jest za krótkie");
+                Console.WriteLine("Imie jest za krótkie");
             }
 
         } while (string.IsNullOrEmpty(imie) || imie.Length < 3);
@@ -182,7 +182,50 @@ class Program
     }
     private static void Usun()
     {
+        string imie;
+        string nazwisko;
+        string usuwanie;
+        string sciezka = "dane.txt";
 
+        Console.WriteLine("Podaj Imie osoby którą chcesz usunąć: ");
+        imie = Console.ReadLine();
+        Console.WriteLine("Podaj Nazwisko osoby którą chcesz usunąć: ");
+        nazwisko = Console.ReadLine();
+
+        string szukany = imie + " " + nazwisko;
+        bool znaleziono = false;
+
+        foreach (string linie  in File.ReadLines(sciezka))
+        {
+            if(linie.Contains(szukany,StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine(linie);
+                znaleziono = true;
+            }
+        }
+        if (!znaleziono)
+        {
+            Console.WriteLine("Nie ma takiej osoby w bazie danych");
+        }
+
+        Console.WriteLine("Czy napewno chcesz usunąć daną osobe? (t/n)");
+        usuwanie =  Console.ReadLine();
+
+        if (usuwanie == "t" ||  usuwanie == "T")
+        {
+            foreach (string linie in File.ReadAllLines(sciezka))
+            {
+                if (linie.Contains(szukany, StringComparison.OrdinalIgnoreCase))
+                {
+                    
+                    Console.WriteLine("Usunięto daną osobe");
+                }    
+            }
+        }
+        else if (usuwanie == "n" ||  usuwanie == "N")
+        {
+            return;
+        }
     }
 }
     
