@@ -18,21 +18,21 @@ class Program
 
         if (odp == "1" || odp == "Zarezerwować termin")
         {
-            Rezerwacja();
+            Reserve();
         }
         else if (odp == "2" || odp == "Wyszukać termin")
         {
-            Wyszukaj();
+            FindReservation();
         }
         else if (odp == "3" || odp == "Usunąć termin")
         {
-            Usun();
+            DeleteReservation();
         }
     }
 
 
 
-    private static void Rezerwacja()
+    private static void Reserve()
     {
         string imie;
         string nazwisko;
@@ -124,7 +124,7 @@ class Program
 
         }
     }
-    private static void Wyszukaj()
+    private static void FindReservation()
     {
         string szukaneimie;
         string szukanenazwisko;
@@ -180,7 +180,7 @@ class Program
         }
 
     }
-    private static void Usun()
+    private static void DeleteReservation()
     {
         string imie;
         string nazwisko;
@@ -213,14 +213,19 @@ class Program
 
         if (usuwanie == "t" ||  usuwanie == "T")
         {
-            foreach (string linie in File.ReadAllLines(sciezka))
+            
+
+            var linie = File.ReadAllLines(sciezka).ToList();
+            foreach (string line in linie.ToList())
             {
-                if (linie.Contains(szukany, StringComparison.OrdinalIgnoreCase))
+                if(line.Contains(szukany, StringComparison.OrdinalIgnoreCase))
                 {
-                    
-                    Console.WriteLine("Usunięto daną osobe");
-                }    
+                    linie.Remove(line);
+                }
             }
+            File.WriteAllLines(sciezka, linie);
+
+            Console.WriteLine("Usunięto daną osobe");
         }
         else if (usuwanie == "n" ||  usuwanie == "N")
         {
