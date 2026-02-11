@@ -37,7 +37,7 @@ namespace Klinika_Dentystyczna
 
             string szukany = szukaneimie + " " + szukanenazwisko;
 
-            string sciezka = "dane.txt";
+            string sciezka = Oddziały.Places();
 
             if (!File.Exists(sciezka))
             {

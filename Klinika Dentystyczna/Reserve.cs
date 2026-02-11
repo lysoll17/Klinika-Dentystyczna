@@ -72,7 +72,15 @@ namespace Klinika_Dentystyczna
 
             } while (!plecpoprawna);
 
-            string sciezka = "dane.txt";
+            
+
+            string sciezka = Oddziały.Places();
+
+            if (!File.Exists(sciezka))
+            {
+                File.Create(sciezka).Close();
+            }
+
             string szukany = imie + " " + nazwisko;
             bool znaleziony = false;
 

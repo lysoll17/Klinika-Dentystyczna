@@ -18,7 +18,9 @@ namespace Klinika_Dentystyczna
             Console.WriteLine("2 - Wyszukać termin");
             Console.WriteLine("3 - Usunąć termin");
             Console.WriteLine("");
+            
             odp = Console.ReadLine();
+            
 
 
             if (odp == "1" || odp == "Zarezerwować termin")

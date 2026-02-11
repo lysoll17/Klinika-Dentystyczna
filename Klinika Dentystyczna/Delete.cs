@@ -11,7 +11,7 @@ namespace Klinika_Dentystyczna
             string imie;
             string nazwisko;
             string usuwanie;
-            string sciezka = "dane.txt";
+            string sciezka = Oddziały.Places();
 
             Console.WriteLine("Podaj Imie osoby którą chcesz usunąć: ");
             imie = Console.ReadLine();
