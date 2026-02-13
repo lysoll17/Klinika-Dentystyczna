@@ -6,60 +6,57 @@ namespace Klinika_Dentystyczna
 {
     internal class Find
     {
-        internal static void FindReservation()
+        internal static void FindReservation(string path)
         {
-            string szukaneimie;
-            string szukanenazwisko;
+            string searchingname;
+            string searchingsurname;
             do
             {
                 Console.WriteLine("Podaj Imie do Wyszukania: ");
-                szukaneimie = Console.ReadLine();
+                searchingname = Console.ReadLine();
 
-                if (string.IsNullOrEmpty(szukaneimie))
+                if (string.IsNullOrEmpty(searchingname))
                 {
                     Console.WriteLine("Nie podano imienia");
-
                 }
+            } while (string.IsNullOrEmpty(searchingname));
 
-            } while (string.IsNullOrEmpty(szukaneimie));
             do
             {
                 Console.WriteLine("Podaj Nazwisko: ");
-                szukanenazwisko = Console.ReadLine();
+                searchingsurname = Console.ReadLine();
 
-                if (string.IsNullOrEmpty(szukanenazwisko))
+                if (string.IsNullOrEmpty(searchingsurname))
                 {
                     Console.WriteLine("Nie podano nazwiska");
-
                 }
+            } while (string.IsNullOrEmpty(searchingsurname));
 
-            } while (string.IsNullOrEmpty(szukanenazwisko));
+            string searching = searchingname + " " + searchingsurname;
 
-            string szukany = szukaneimie + " " + szukanenazwisko;
-
-            string sciezka = Oddziały.Places();
-
-            if (!File.Exists(sciezka))
+            if (!File.Exists(path))
             {
                 Console.WriteLine("Brak pliku z rezerwacjami");
                 return;
             }
 
-            bool znaleziono = false;
+            bool found = false;
 
-            foreach (string linie in File.ReadLines(sciezka))
+            foreach (string line in File.ReadLines(path))
             {
-                if (linie.Contains(szukany, StringComparison.OrdinalIgnoreCase))
+                if (line.Contains(searching, StringComparison.OrdinalIgnoreCase))
                 {
                     Console.WriteLine("Znaleziono Rezerwacje");
-                    Console.WriteLine(linie);
-                    znaleziono = true;
+                    Console.WriteLine(line);
+                    Console.WriteLine(" ");
+                    found = true;
                 }
             }
-            if (!znaleziono)
+            if (!found)
             {
                 Console.WriteLine("Nie znaleziono rezerwacji");
             }
+            Begining.Start();
 
         }
     }

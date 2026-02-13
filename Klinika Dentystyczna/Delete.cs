@@ -6,57 +6,88 @@ namespace Klinika_Dentystyczna
 {
     internal class Delete
     {
-        internal static void DeleteReservation()
+        internal static void DeleteReservation(string path)
         {
-            string imie;
-            string nazwisko;
-            string usuwanie;
-            string sciezka = Oddziały.Places();
+            string name;
+            string surname;
+            string deleting;
 
             Console.WriteLine("Podaj Imie osoby którą chcesz usunąć: ");
-            imie = Console.ReadLine();
+            name = Console.ReadLine();
             Console.WriteLine("Podaj Nazwisko osoby którą chcesz usunąć: ");
-            nazwisko = Console.ReadLine();
+            surname = Console.ReadLine();
 
-            string szukany = imie + " " + nazwisko;
-            bool znaleziono = false;
+            string searching = name + " " + surname;
+            bool found = false;
 
-            foreach (string linie in File.ReadLines(sciezka))
+            foreach (string line in File.ReadLines(path))
             {
-                if (linie.Contains(szukany, StringComparison.OrdinalIgnoreCase))
+                if (line.Contains(searching, StringComparison.OrdinalIgnoreCase))
                 {
-                    Console.WriteLine(linie);
-                    znaleziono = true;
+                    Console.WriteLine(line);
+                    found = true;
                 }
             }
-            if (!znaleziono)
+            if (!found)
             {
                 Console.WriteLine("Nie ma takiej osoby w bazie danych");
             }
 
-            Console.WriteLine("Czy napewno chcesz usunąć daną osobe? (t/n)");
-            usuwanie = Console.ReadLine();
+            string time;
+            DateTime equals;
 
-            if (usuwanie == "t" || usuwanie == "T")
+            while (true)
             {
+                Console.WriteLine("Podaj godzine którą chcesz usunąć (HH:mm):");
+                time = Console.ReadLine().Trim();
 
+                bool correcttime = DateTime.TryParseExact(time, "HH:mm", System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None, out equals);
 
-                var linie = File.ReadAllLines(sciezka).ToList();
-                foreach (string line in linie.ToList())
+                if (!correcttime)
                 {
-                    if (line.Contains(szukany, StringComparison.OrdinalIgnoreCase))
+                    Console.WriteLine("Błąd! Wpisz godzine w formacie HH:mm (np. 12:30)");
+                }
+                else
+                {
+                    break;
+                }                
+            }
+
+            Console.WriteLine("Czy napewno chcesz usunąć rezerwacja o danej godzinie? (t/n)");
+            deleting = Console.ReadLine();
+
+            if (deleting == "t" || deleting == "T")
+            {
+                var linie = File.ReadAllLines(path).ToList();
+                bool foundtodelete = false;
+
+                for(int i = linie.Count - 1;i >= 0;i--)
+                {
+                    string line = linie[i];
+
+                    if(line.IndexOf(searching, StringComparison.OrdinalIgnoreCase) >= 0 && line.Contains(" - " + time))
                     {
-                        linie.Remove(line);
+                        linie.RemoveAt(i);
+                        foundtodelete = true;
+                        break;
                     }
                 }
-                File.WriteAllLines(sciezka, linie);
-
-                Console.WriteLine("Usunięto daną osobe");
+                if (foundtodelete)
+                {
+                    File.WriteAllLines(path, linie);
+                    Console.WriteLine("Usunięto daną rezerwacje");
+                }
+                else
+                {
+                    Console.WriteLine("Nie znaleziono rezerwacji danej osoby o tej godzinie");
+                }
             }
-            else if (usuwanie == "n" || usuwanie == "N")
+            else if (deleting == "n" || deleting == "N")
             {
                 return;
             }
+            Begining.Start();
         }
+        
     }
 }

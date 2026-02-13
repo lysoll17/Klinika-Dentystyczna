@@ -9,12 +9,6 @@ class Klinika
     {
         Begining.Start();
     }
-
-
- 
-    
-    
-    
 }
     
 
