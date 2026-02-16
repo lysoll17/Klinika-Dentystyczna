@@ -15,7 +15,8 @@ namespace Klinika_Dentystyczna
             Console.WriteLine("1 - Zarezerwować termin");
             Console.WriteLine("2 - Usunąć termin");
             Console.WriteLine("3 - Wyszukać termin");
-            Console.WriteLine("4 - Zakończ program");
+            Console.WriteLine("4 - Wyczyścić terminy");
+            Console.WriteLine("5 - Zakończ program");
             Console.WriteLine("");
           
             answer = Console.ReadLine();
@@ -36,7 +37,12 @@ namespace Klinika_Dentystyczna
                 string path = Branches.Places();
                 Find.FindReservation(path);
             }
-            else if (answer == "4" ||  answer == "Zakończ program")
+            else if (answer == "4" || answer == "Wyczyścić terminy")
+            {
+                string path = Branches.Places();
+                DeleteTerms.Delete(path);
+            }
+            else if (answer == "5" || answer == "Zakończ program")
             {
                 Environment.Exit(0);
             }    
